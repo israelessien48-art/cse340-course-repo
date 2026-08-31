@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <rect width="800" height="450" fill="#eef5ea"/>
+  <circle cx="400" cy="185" r="95" fill="#3d7040"/>
+  <path d="M400 270 C350 230 340 165 400 105 C460 165 450 230 400 270 Z" fill="#ffffff"/>
+  <path d="M400 145 L400 275" stroke="#3d7040" stroke-width="8"/>
+  <text x="400" y="365" text-anchor="middle" font-family="Arial" font-size="38" font-weight="bold" fill="#17324d">Green Initiative</text>
+</svg>
