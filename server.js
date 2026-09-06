@@ -2,6 +2,7 @@ import express from "express";
 import { fileURLToPath } from "url";
 import path from "path";
 import { getAllProjects } from "./src/models/projects.js";
+import { getAllCategories } from "./src/models/categories.js";
 
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || "production";
 const PORT = process.env.PORT || 3000;
@@ -41,8 +42,15 @@ app.get("/projects", async (req, res) => {
 });
 
 // Categories route
-app.get("/categories", (req, res) => {
-  res.render("categories", { title: "Categories" });
+app.get("/categories", async (req, res) => {
+  try {
+    const categories = await getAllCategories();
+    console.log("Categories retrieved:", categories.length);
+    res.render("categories", { title: "Categories", categories });
+  } catch (error) {
+    console.error("Error retrieving categories:", error);
+    res.status(500).send("Unable to retrieve categories.");
+  }
 });
 
 // Start server
@@ -50,6 +58,9 @@ app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server is running on port ${PORT}`);
   console.log(`Environment: ${NODE_ENV}`);
 });
+
+
+
 
 
 
