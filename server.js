@@ -1,6 +1,7 @@
 import express from "express";
 import { fileURLToPath } from "url";
 import path from "path";
+import { getAllProjects } from "./src/models/projects.js";
 
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || "production";
 const PORT = process.env.PORT || 3000;
@@ -28,8 +29,15 @@ app.get("/organizations", (req, res) => {
 });
 
 // Service Projects route
-app.get("/projects", (req, res) => {
-  res.render("projects", { title: "Service Projects" });
+app.get("/projects", async (req, res) => {
+  try {
+    const projects = await getAllProjects();
+    console.log("Projects retrieved:", projects.length);
+    res.render("projects", { title: "Service Projects", projects });
+  } catch (error) {
+    console.error("Error retrieving projects:", error);
+    res.status(500).send("Unable to retrieve projects.");
+  }
 });
 
 // Categories route
@@ -42,3 +50,9 @@ app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server is running on port ${PORT}`);
   console.log(`Environment: ${NODE_ENV}`);
 });
+
+
+
+
+
+
