@@ -8,39 +8,37 @@
 </p>
 
 <section>
-  <h2>Community Partners</h2>
-  <img
-    src="/images/community-partners.svg"
-    alt="Community partners working together"
-  >
-  <p>
-    Community organizations connect volunteers with projects that
-    address local needs.
-  </p>
-</section>
+  <h2>Community Organizations</h2>
 
-<section>
-  <h2>Green Initiative</h2>
-  <img
-    src="/images/green-initiative.svg"
-    alt="Green initiative representing environmental service"
-  >
-  <p>
-    Environmental organizations support projects that protect and
-    improve our communities and natural surroundings.
-  </p>
-</section>
+  <% organizations.forEach((organization) => { %>
+    <article>
+      <h3><%= organization.name %></h3>
 
-<section>
-  <h2>Education Network</h2>
-  <img
-    src="/images/education-network.svg"
-    alt="Education network representing learning and collaboration"
-  >
-  <p>
-    Educational organizations provide opportunities for learning,
-    mentoring, and community development.
-  </p>
+      <% if (organization.name === "BrightFuture Builders") { %>
+        <img
+          src="/images/community-partners.svg"
+          alt="BrightFuture Builders logo"
+        >
+      <% } else if (organization.name === "GreenHarvest Growers") { %>
+        <img
+          src="/images/green-initiative.svg"
+          alt="GreenHarvest Growers logo"
+        >
+      <% } else if (organization.name === "UnityServe Volunteers") { %>
+        <img
+          src="/images/education-network.svg"
+          alt="UnityServe Volunteers logo"
+        >
+      <% } %>
+
+      <p><%= organization.description %></p>
+
+      <p>
+        <strong>Contact:</strong>
+        <%= organization.contact_email %>
+      </p>
+    </article>
+  <% }) %>
 </section>
 
 <%- include("partials/footer") %>

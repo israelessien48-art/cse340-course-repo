@@ -2,6 +2,7 @@ import express from "express";
 import { fileURLToPath } from "url";
 import path from "path";
 import { getAllProjects } from "./src/models/projects.js";
+import { getAllOrganizations } from "./src/models/organizations.js";
 import { getAllCategories } from "./src/models/categories.js";
 
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || "production";
@@ -25,8 +26,18 @@ app.get("/", (req, res) => {
 });
 
 // Organizations route
-app.get("/organizations", (req, res) => {
-  res.render("organizations", { title: "Organizations" });
+app.get("/organizations", async (req, res) => {
+  try {
+    const organizations = await getAllOrganizations();
+    console.log("Organizations retrieved:", organizations.length);
+    res.render("organizations", {
+      title: "Organizations",
+      organizations
+    });
+  } catch (error) {
+    console.error("Error retrieving organizations:", error);
+    res.status(500).send("Unable to retrieve organizations.");
+  }
 });
 
 // Service Projects route
@@ -58,12 +69,3 @@ app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server is running on port ${PORT}`);
   console.log(`Environment: ${NODE_ENV}`);
 });
-
-
-
-
-
-
-
-
-
