@@ -6,8 +6,19 @@
 <section>
   <% projects.forEach(project => { %>
     <article>
-      <h2><%= project.title %></h2>
-      <p><strong>Organization:</strong> <%= project.organization_name %></p>
+      <h2>
+        <a href="/project/<%= project.project_id %>">
+          <%= project.title %>
+        </a>
+      </h2>
+
+      <p>
+        <strong>Organization:</strong>
+        <a href="/organization/<%= project.organization_id %>">
+          <%= project.organization_name %>
+        </a>
+      </p>
+
       <p><strong>Date:</strong> <%= project.formatted_date %></p>
       <p><strong>Location:</strong> <%= project.location %></p>
       <p><%= project.description %></p>

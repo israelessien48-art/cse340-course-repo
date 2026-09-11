@@ -1,9 +1,8 @@
 import express from "express";
 import { fileURLToPath } from "url";
 import path from "path";
-import { getAllProjects } from "./src/models/projects.js";
-import { getAllOrganizations } from "./src/models/organizations.js";
-import { getAllCategories } from "./src/models/categories.js";
+import router from "./src/routes.js";
+import { show500 } from "./src/controllers/errors.js";
 
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || "production";
 const PORT = process.env.PORT || 3000;
@@ -20,49 +19,25 @@ app.set("views", path.join(__dirname, "src/views"));
 // Serve static files from the public directory
 app.use(express.static(path.join(__dirname, "public")));
 
-// Home route
-app.get("/", (req, res) => {
-  res.render("home", { title: "Home" });
+// Middleware to log all incoming requests
+app.use((req, res, next) => {
+  if (NODE_ENV === "development") {
+    console.log(`${req.method} ${req.url}`);
+  }
+  next();
 });
 
-// Organizations route
-app.get("/organizations", async (req, res) => {
-  try {
-    const organizations = await getAllOrganizations();
-    console.log("Organizations retrieved:", organizations.length);
-    res.render("organizations", {
-      title: "Organizations",
-      organizations
-    });
-  } catch (error) {
-    console.error("Error retrieving organizations:", error);
-    res.status(500).send("Unable to retrieve organizations.");
-  }
+// Middleware to make NODE_ENV available to all templates
+app.use((req, res, next) => {
+  res.locals.NODE_ENV = NODE_ENV;
+  next();
 });
 
-// Service Projects route
-app.get("/projects", async (req, res) => {
-  try {
-    const projects = await getAllProjects();
-    console.log("Projects retrieved:", projects.length);
-    res.render("projects", { title: "Service Projects", projects });
-  } catch (error) {
-    console.error("Error retrieving projects:", error);
-    res.status(500).send("Unable to retrieve projects.");
-  }
-});
+// Use application routes
+app.use(router);
 
-// Categories route
-app.get("/categories", async (req, res) => {
-  try {
-    const categories = await getAllCategories();
-    console.log("Categories retrieved:", categories.length);
-    res.render("categories", { title: "Categories", categories });
-  } catch (error) {
-    console.error("Error retrieving categories:", error);
-    res.status(500).send("Unable to retrieve categories.");
-  }
-});
+// Global error handler
+app.use(show500);
 
 // Start server
 app.listen(PORT, "0.0.0.0", () => {

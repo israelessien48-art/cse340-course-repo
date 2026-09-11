@@ -12,7 +12,11 @@
 
   <% organizations.forEach((organization) => { %>
     <article>
-      <h3><%= organization.name %></h3>
+      <h3>
+        <a href="/organization/<%= organization.organization_id %>">
+          <%= organization.name %>
+        </a>
+      </h3>
 
       <% if (organization.name === "BrightFuture Builders") { %>
         <img
