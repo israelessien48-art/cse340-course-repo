@@ -1,6 +1,7 @@
 import {
   getUpcomingProjects,
-  getProjectDetails
+  getProjectDetails,
+  getCategoriesByProjectId
 } from "../models/projects.js";
 
 const NUMBER_OF_UPCOMING_PROJECTS = 5;
@@ -31,9 +32,14 @@ export async function showProjectDetailsPage(req, res, next) {
       return next(err);
     }
 
+    const categories = await getCategoriesByProjectId(projectId);
+
     res.render("project", {
       title: project.title,
-      project
+      project: {
+        ...project,
+        categories
+      }
     });
   } catch (error) {
     next(error);

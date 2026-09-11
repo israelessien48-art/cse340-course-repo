@@ -1,48 +1,38 @@
 <%- include("partials/header") %>
 
-<h1><%= title %></h1>
+<main>
+  <h1><%= title %></h1>
 
-<p>
-  Organizations working together to make a positive difference
-  through meaningful service projects.
-</p>
+  <p>
+    Organizations working together to make a positive difference
+    through meaningful service projects.
+  </p>
 
-<section>
-  <h2>Community Organizations</h2>
+  <section>
+    <h2>Community Organizations</h2>
 
-  <% organizations.forEach((organization) => { %>
-    <article>
-      <h3>
-        <a href="/organization/<%= organization.organization_id %>">
-          <%= organization.name %>
-        </a>
-      </h3>
-
-      <% if (organization.name === "BrightFuture Builders") { %>
+    <% organizations.forEach((organization) => { %>
+      <article>
         <img
-          src="/images/community-partners.svg"
-          alt="BrightFuture Builders logo"
+          src="/images/<%= organization.logo_filename %>"
+          alt="<%= organization.name %> logo"
         >
-      <% } else if (organization.name === "GreenHarvest Growers") { %>
-        <img
-          src="/images/green-initiative.svg"
-          alt="GreenHarvest Growers logo"
-        >
-      <% } else if (organization.name === "UnityServe Volunteers") { %>
-        <img
-          src="/images/education-network.svg"
-          alt="UnityServe Volunteers logo"
-        >
-      <% } %>
 
-      <p><%= organization.description %></p>
+        <h3>
+          <a href="/organization/<%= organization.organization_id %>">
+            <%= organization.name %>
+          </a>
+        </h3>
 
-      <p>
-        <strong>Contact:</strong>
-        <%= organization.contact_email %>
-      </p>
-    </article>
-  <% }) %>
-</section>
+        <p><%= organization.description %></p>
+
+        <p>
+          <strong>Contact:</strong>
+          <%= organization.contact_email %>
+        </p>
+      </article>
+    <% }) %>
+  </section>
+</main>
 
 <%- include("partials/footer") %>

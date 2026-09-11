@@ -1,6 +1,7 @@
 import {
   getAllCategories,
-  getCategoryDetails
+  getCategoryDetails,
+  getProjectsByCategoryId
 } from "../models/categories.js";
 
 export async function showCategoriesPage(req, res, next) {
@@ -27,9 +28,14 @@ export async function showCategoryDetailsPage(req, res, next) {
       return next(err);
     }
 
+    const projects = await getProjectsByCategoryId(categoryId);
+
     res.render("category", {
       title: category.name,
-      category
+      category: {
+        ...category,
+        projects
+      }
     });
   } catch (error) {
     next(error);

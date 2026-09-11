@@ -1,6 +1,11 @@
 <%- include("partials/header") %>
 
 <main>
+  <img
+    src="/images/<%= organization.logo_filename %>"
+    alt="<%= organization.name %> logo"
+  >
+
   <h1><%= organization.name %></h1>
 
   <p><%= organization.description %></p>
