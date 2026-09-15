@@ -1,4 +1,6 @@
 import express from "express";
+import session from "express-session";
+import flash from "connect-flash";
 import { fileURLToPath } from "url";
 import path from "path";
 import router from "./src/routes.js";
@@ -16,8 +18,29 @@ const app = express();
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "src/views"));
 
+// Parse URL-encoded form data
+app.use(express.urlencoded({ extended: true }));
+
 // Serve static files from the public directory
 app.use(express.static(path.join(__dirname, "public")));
+
+// Configure sessions for flash messages
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "cse340-week4-secret",
+    resave: false,
+    saveUninitialized: false
+  })
+);
+
+// Enable flash messages
+app.use(flash());
+
+// Make flash messages available to all templates
+app.use((req, res, next) => {
+  res.locals.messages = req.flash();
+  next();
+});
 
 // Middleware to log all incoming requests
 app.use((req, res, next) => {

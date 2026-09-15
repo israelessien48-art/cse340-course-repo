@@ -1,7 +1,11 @@
 import {
   getAllOrganizations,
-  getOrganizationDetails
+  getOrganizationDetails,
+  createOrganization,
+  updateOrganization
 } from "../models/organizations.js";
+
+import { validationResult } from "express-validator";
 
 export async function showOrganizationsPage(req, res, next) {
   try {
@@ -31,6 +35,107 @@ export async function showOrganizationDetailsPage(req, res, next) {
       title: organization.name,
       organization
     });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export function showNewOrganizationForm(req, res) {
+  res.render("new-organization", {
+    title: "Add Organization",
+    errors: [],
+    data: {}
+  });
+}
+
+export async function processNewOrganizationForm(req, res, next) {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).render("new-organization", {
+      title: "Add Organization",
+      errors: errors.array(),
+      data: req.body
+    });
+  }
+
+  try {
+    const {
+      name,
+      description,
+      contact_email,
+      logo_filename
+    } = req.body;
+
+    await createOrganization(
+      name,
+      description,
+      contact_email,
+      logo_filename
+    );
+
+    req.flash("success", "Organization created successfully.");
+    res.redirect("/organizations");
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function showEditOrganizationForm(req, res, next) {
+  try {
+    const organizationId = req.params.id;
+    const organization = await getOrganizationDetails(organizationId);
+
+    if (!organization) {
+      const err = new Error("Organization not found");
+      err.status = 404;
+      return next(err);
+    }
+
+    res.render("edit-organization", {
+      title: `Edit ${organization.name}`,
+      errors: [],
+      data: organization
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function processEditOrganizationForm(req, res, next) {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).render("edit-organization", {
+      title: "Edit Organization",
+      errors: errors.array(),
+      data: {
+        organization_id: req.params.id,
+        ...req.body
+      }
+    });
+  }
+
+  try {
+    const organizationId = req.params.id;
+
+    const {
+      name,
+      description,
+      contact_email,
+      logo_filename
+    } = req.body;
+
+    await updateOrganization(
+      organizationId,
+      name,
+      description,
+      contact_email,
+      logo_filename
+    );
+
+    req.flash("success", "Organization updated successfully.");
+    res.redirect(`/organization/${organizationId}`);
   } catch (error) {
     next(error);
   }

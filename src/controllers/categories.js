@@ -1,8 +1,12 @@
 import {
   getAllCategories,
   getCategoryDetails,
-  getProjectsByCategoryId
+  getProjectsByCategoryId,
+  createCategory,
+  updateCategory
 } from "../models/categories.js";
+
+import { validationResult } from "express-validator";
 
 export async function showCategoriesPage(req, res, next) {
   try {
@@ -37,6 +41,87 @@ export async function showCategoryDetailsPage(req, res, next) {
         projects
       }
     });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export function showNewCategoryForm(req, res) {
+  res.render("new-category", {
+    title: "Add Category",
+    errors: [],
+    data: {}
+  });
+}
+
+export async function processNewCategoryForm(req, res, next) {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).render("new-category", {
+      title: "Add Category",
+      errors: errors.array(),
+      data: req.body
+    });
+  }
+
+  try {
+    const { name } = req.body;
+
+    await createCategory(name);
+
+    req.flash("success", "Category created successfully.");
+
+    res.redirect("/categories");
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function showEditCategoryForm(req, res, next) {
+  try {
+    const categoryId = req.params.id;
+    const category = await getCategoryDetails(categoryId);
+
+    if (!category) {
+      const err = new Error("Category not found");
+      err.status = 404;
+      return next(err);
+    }
+
+    res.render("edit-category", {
+      title: `Edit ${category.name}`,
+      errors: [],
+      data: category
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function processEditCategoryForm(req, res, next) {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).render("edit-category", {
+      title: "Edit Category",
+      errors: errors.array(),
+      data: {
+        category_id: req.params.id,
+        ...req.body
+      }
+    });
+  }
+
+  try {
+    const categoryId = req.params.id;
+    const { name } = req.body;
+
+    await updateCategory(categoryId, name);
+
+    req.flash("success", "Category updated successfully.");
+
+    res.redirect(`/category/${categoryId}`);
   } catch (error) {
     next(error);
   }

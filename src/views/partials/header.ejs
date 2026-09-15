@@ -16,4 +16,12 @@
     </nav>
   </header>
 
-  <main>
+  <% if (messages) { %>
+    <% Object.entries(messages).forEach(([type, messageList]) => { %>
+      <% messageList.forEach((message) => { %>
+        <div role="status" class="flash-message <%= type %>">
+          <%= message %>
+        </div>
+      <% }) %>
+    <% }) %>
+  <% } %>

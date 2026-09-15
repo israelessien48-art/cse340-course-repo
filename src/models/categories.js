@@ -52,3 +52,37 @@ export async function getProjectsByCategoryId(id) {
 
   return rows;
 }
+
+export async function createCategory(name) {
+  const result = await db.query(
+    `
+      INSERT INTO category
+        (name)
+      VALUES
+        ($1)
+      RETURNING category_id;
+    `,
+    [name]
+  );
+
+  return result.rows[0];
+}
+
+export async function updateCategory(category_id, name) {
+  const result = await db.query(
+    `
+      UPDATE category
+      SET
+        name = $1
+      WHERE category_id = $2
+      RETURNING category_id;
+    `,
+    [name, category_id]
+  );
+
+  if (result.rows.length === 0) {
+    throw new Error("Category update failed.");
+  }
+
+  return result.rows[0];
+}

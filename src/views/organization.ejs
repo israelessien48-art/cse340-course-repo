@@ -15,6 +15,12 @@
     <%= organization.contact_email %>
   </p>
 
+  <p>
+    <a href="/edit-organization/<%= organization.organization_id %>">
+      Edit Organization
+    </a>
+  </p>
+
   <h2>Service Projects</h2>
 
   <% if (organization.projects.length > 0) { %>

@@ -2,7 +2,12 @@ import db from "./db.js";
 
 export async function getAllOrganizations() {
   const { rows } = await db.query(`
-    SELECT organization_id, name, description, contact_email, logo_filename
+    SELECT
+      organization_id,
+      name,
+      description,
+      contact_email,
+      logo_filename
     FROM organization
     ORDER BY organization_id;
   `);
@@ -46,4 +51,58 @@ export async function getOrganizationDetails(id) {
     ...organizationResult.rows[0],
     projects: projectsResult.rows
   };
+}
+
+export async function createOrganization(
+  name,
+  description,
+  contact_email,
+  logo_filename
+) {
+  const result = await db.query(
+    `
+      INSERT INTO organization
+        (name, description, contact_email, logo_filename)
+      VALUES
+        ($1, $2, $3, $4)
+      RETURNING organization_id;
+    `,
+    [name, description, contact_email, logo_filename]
+  );
+
+  return result.rows[0];
+}
+
+export async function updateOrganization(
+  organization_id,
+  name,
+  description,
+  contact_email,
+  logo_filename
+) {
+  const result = await db.query(
+    `
+      UPDATE organization
+      SET
+        name = $1,
+        description = $2,
+        contact_email = $3,
+        logo_filename = $4
+      WHERE organization_id = $5
+      RETURNING organization_id;
+    `,
+    [
+      name,
+      description,
+      contact_email,
+      logo_filename,
+      organization_id
+    ]
+  );
+
+  if (result.rows.length === 0) {
+    throw new Error("Organization update failed.");
+  }
+
+  return result.rows[0];
 }

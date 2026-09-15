@@ -1,0 +1,49 @@
+<%- include("partials/header") %>
+
+<main>
+  <h1><%= title %></h1>
+
+  <p>
+    Select the categories that apply to
+    <strong><%= project.title %></strong>.
+  </p>
+
+  <form
+    action="/project/<%= project.project_id %>/categories"
+    method="POST"
+  >
+    <fieldset>
+      <legend>Project Categories</legend>
+
+      <% if (categories.length > 0) { %>
+        <% categories.forEach((category) => { %>
+          <div>
+            <input
+              type="checkbox"
+              id="category-<%= category.category_id %>"
+              name="category_ids"
+              value="<%= category.category_id %>"
+              <%= currentCategoryIds.includes(category.category_id) ? "checked" : "" %>
+            >
+
+            <label for="category-<%= category.category_id %>">
+              <%= category.name %>
+            </label>
+          </div>
+        <% }) %>
+      <% } else { %>
+        <p>No categories are available.</p>
+      <% } %>
+    </fieldset>
+
+    <button type="submit">Save Categories</button>
+  </form>
+
+  <p>
+    <a href="/project/<%= project.project_id %>">
+      Cancel
+    </a>
+  </p>
+</main>
+
+<%- include("partials/footer") %>
