@@ -1,0 +1,16 @@
+<%- include("partials/header") %>
+
+<h1>Dashboard</h1>
+
+<p>Welcome to your dashboard, <%= user.name %>.</p>
+
+<p>
+  You are logged in as:
+  <strong><%= user.role_id === 2 ? "Administrator" : "User" %></strong>
+</p>
+
+<p>
+  Use the navigation above to access the parts of the CSE 340 Service Projects site available to you.
+</p>
+
+<%- include("partials/footer") %>

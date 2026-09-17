@@ -13,6 +13,23 @@
       <a href="/organizations">Organizations</a>
       <a href="/projects">Service Projects</a>
       <a href="/categories">Categories</a>
+
+      <% if (user) { %>
+        <a href="/dashboard">Dashboard</a>
+
+        <% if (user.role_id === 2) { %>
+          <a href="/users">Users</a>
+        <% } %>
+
+        <span>Welcome, <%= user.name %></span>
+
+        <form action="/logout" method="POST" style="display: inline;">
+          <button type="submit">Logout</button>
+        </form>
+      <% } else { %>
+        <a href="/login">Login</a>
+        <a href="/register">Register</a>
+      <% } %>
     </nav>
   </header>
 

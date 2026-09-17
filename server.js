@@ -42,6 +42,12 @@ app.use((req, res, next) => {
   next();
 });
 
+// Make the logged-in user available to all EJS templates
+app.use((req, res, next) => {
+  res.locals.user = req.session.user || null;
+  next();
+});
+
 // Middleware to log all incoming requests
 app.use((req, res, next) => {
   if (NODE_ENV === "development") {

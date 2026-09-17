@@ -22,17 +22,19 @@
     </a>
   </p>
 
-  <p>
-    <a href="/edit-project/<%= project.project_id %>">
-      Edit Project
-    </a>
-  </p>
+  <% if (user && user.role_id === 2) { %>
+    <p>
+      <a href="/edit-project/<%= project.project_id %>">
+        Edit Project
+      </a>
+    </p>
 
-  <p>
-    <a href="/project/<%= project.project_id %>/categories">
-      Update Categories
-    </a>
-  </p>
+    <p>
+      <a href="/project/<%= project.project_id %>/categories">
+        Update Categories
+      </a>
+    </p>
+  <% } %>
 
   <h2>Categories</h2>
 

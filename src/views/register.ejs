@@ -1,0 +1,56 @@
+<%- include("partials/header") %>
+
+<h1>Register</h1>
+
+<% if (errors && errors.length > 0) { %>
+  <div class="notice error">
+    <ul>
+      <% errors.forEach(error => { %>
+        <li><%= error.msg %></li>
+      <% }) %>
+    </ul>
+  </div>
+<% } %>
+
+<form action="/register" method="POST">
+  <div>
+    <label for="name">Name</label>
+    <input
+      type="text"
+      id="name"
+      name="name"
+      value="<%= data?.name || '' %>"
+      required
+    >
+  </div>
+
+  <div>
+    <label for="email">Email</label>
+    <input
+      type="email"
+      id="email"
+      name="email"
+      value="<%= data?.email || '' %>"
+      required
+    >
+  </div>
+
+  <div>
+    <label for="password">Password</label>
+    <input
+      type="password"
+      id="password"
+      name="password"
+      required
+    >
+  </div>
+
+  <button type="submit">Register</button>
+</form>
+
+<p>
+  Already have an account?
+  <a href="/login">Log in</a>
+</p>
+
+<%- include("partials/footer") %>
