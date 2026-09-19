@@ -1,5 +1,5 @@
-export function showDashboard(req, res) {
+export const showDashboard = (req, res) => {
   res.render("dashboard", {
     title: "Dashboard"
   });
-}
+};

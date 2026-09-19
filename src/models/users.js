@@ -1,6 +1,6 @@
 import pool from "./db.js";
 
-export async function getUserByEmail(email) {
+export const getUserByEmail = async (email) => {
   const result = await pool.query(
     `SELECT user_id, name, email, password_hash, role_id
      FROM users
@@ -9,9 +9,9 @@ export async function getUserByEmail(email) {
   );
 
   return result.rows[0];
-}
+};
 
-export async function getUserById(userId) {
+export const getUserById = async (userId) => {
   const result = await pool.query(
     `SELECT u.user_id, u.name, u.email, u.role_id, r.role_name
      FROM users u
@@ -21,9 +21,9 @@ export async function getUserById(userId) {
   );
 
   return result.rows[0];
-}
+};
 
-export async function getAllUsers() {
+export const getAllUsers = async () => {
   const result = await pool.query(
     `SELECT u.user_id, u.name, u.email, r.role_name
      FROM users u
@@ -32,9 +32,14 @@ export async function getAllUsers() {
   );
 
   return result.rows;
-}
+};
 
-export async function createUser(name, email, passwordHash, roleId = 1) {
+export const createUser = async (
+  name,
+  email,
+  passwordHash,
+  roleId = 1
+) => {
   const result = await pool.query(
     `INSERT INTO users (name, email, password_hash, role_id)
      VALUES ($1, $2, $3, $4)
@@ -43,4 +48,4 @@ export async function createUser(name, email, passwordHash, roleId = 1) {
   );
 
   return result.rows[0];
-}
+};

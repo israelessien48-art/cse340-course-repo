@@ -1,6 +1,6 @@
 import db from "./db.js";
 
-export async function getAllCategories() {
+export const getAllCategories = async () => {
   const { rows } = await db.query(`
     SELECT
       category_id,
@@ -10,9 +10,9 @@ export async function getAllCategories() {
   `);
 
   return rows;
-}
+};
 
-export async function getCategoryDetails(id) {
+export const getCategoryDetails = async (id) => {
   const { rows } = await db.query(
     `
       SELECT
@@ -29,9 +29,9 @@ export async function getCategoryDetails(id) {
   }
 
   return rows[0];
-}
+};
 
-export async function getProjectsByCategoryId(id) {
+export const getProjectsByCategoryId = async (id) => {
   const { rows } = await db.query(
     `
       SELECT
@@ -51,9 +51,9 @@ export async function getProjectsByCategoryId(id) {
   );
 
   return rows;
-}
+};
 
-export async function createCategory(name) {
+export const createCategory = async (name) => {
   const result = await db.query(
     `
       INSERT INTO category
@@ -66,9 +66,9 @@ export async function createCategory(name) {
   );
 
   return result.rows[0];
-}
+};
 
-export async function updateCategory(category_id, name) {
+export const updateCategory = async (category_id, name) => {
   const result = await db.query(
     `
       UPDATE category
@@ -85,4 +85,4 @@ export async function updateCategory(category_id, name) {
   }
 
   return result.rows[0];
-}
+};

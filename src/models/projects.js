@@ -1,6 +1,6 @@
 import db from "./db.js";
 
-export async function getAllProjects() {
+export const getAllProjects = async () => {
   const { rows } = await db.query(`
     SELECT
       p.project_id,
@@ -18,9 +18,9 @@ export async function getAllProjects() {
   `);
 
   return rows;
-}
+};
 
-export async function getUpcomingProjects(number_of_projects) {
+export const getUpcomingProjects = async (number_of_projects) => {
   const { rows } = await db.query(
     `
       SELECT
@@ -43,9 +43,9 @@ export async function getUpcomingProjects(number_of_projects) {
   );
 
   return rows;
-}
+};
 
-export async function getProjectDetails(id) {
+export const getProjectDetails = async (id) => {
   const { rows } = await db.query(
     `
       SELECT
@@ -70,9 +70,9 @@ export async function getProjectDetails(id) {
   }
 
   return rows[0];
-}
+};
 
-export async function getCategoriesByProjectId(id) {
+export const getCategoriesByProjectId = async (id) => {
   const { rows } = await db.query(
     `
       SELECT
@@ -88,15 +88,15 @@ export async function getCategoriesByProjectId(id) {
   );
 
   return rows;
-}
+};
 
-export async function createProject(
+export const createProject = async (
   organization_id,
   title,
   description,
   location,
   date
-) {
+) => {
   const result = await db.query(
     `
       INSERT INTO project
@@ -115,16 +115,16 @@ export async function createProject(
   );
 
   return result.rows[0];
-}
+};
 
-export async function updateProject(
+export const updateProject = async (
   project_id,
   organization_id,
   title,
   description,
   location,
   date
-) {
+) => {
   const result = await db.query(
     `
       UPDATE project
@@ -152,9 +152,12 @@ export async function updateProject(
   }
 
   return result.rows[0];
-}
+};
 
-export async function updateProjectCategories(projectId, categoryIds) {
+export const updateProjectCategories = async (
+  projectId,
+  categoryIds
+) => {
   const client = await db.connect();
 
   try {
@@ -187,4 +190,4 @@ export async function updateProjectCategories(projectId, categoryIds) {
   } finally {
     client.release();
   }
-}
+};

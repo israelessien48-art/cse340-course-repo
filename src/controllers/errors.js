@@ -1,10 +1,10 @@
-export function show404(req, res, next) {
+export const show404 = (req, res, next) => {
   const err = new Error("Page Not Found");
   err.status = 404;
   next(err);
-}
+};
 
-export function show500(err, req, res, next) {
+export const show500 = (err, req, res, next) => {
   console.error("Error occurred:", err.message);
   console.error("Stack trace:", err.stack);
 
@@ -16,4 +16,4 @@ export function show500(err, req, res, next) {
     error: err.message,
     stack: err.stack
   });
-}
+};

@@ -13,7 +13,7 @@ import { validationResult } from "express-validator";
 
 const NUMBER_OF_UPCOMING_PROJECTS = 5;
 
-export async function showProjectsPage(req, res, next) {
+export const showProjectsPage = async (req, res, next) => {
   try {
     const projects = await getUpcomingProjects(
       NUMBER_OF_UPCOMING_PROJECTS
@@ -26,9 +26,9 @@ export async function showProjectsPage(req, res, next) {
   } catch (error) {
     next(error);
   }
-}
+};
 
-export async function showProjectDetailsPage(req, res, next) {
+export const showProjectDetailsPage = async (req, res, next) => {
   try {
     const projectId = req.params.id;
     const project = await getProjectDetails(projectId);
@@ -51,9 +51,9 @@ export async function showProjectDetailsPage(req, res, next) {
   } catch (error) {
     next(error);
   }
-}
+};
 
-export async function showNewProjectForm(req, res, next) {
+export const showNewProjectForm = async (req, res, next) => {
   try {
     const organizations = await getAllOrganizations();
 
@@ -66,9 +66,9 @@ export async function showNewProjectForm(req, res, next) {
   } catch (error) {
     next(error);
   }
-}
+};
 
-export async function processNewProjectForm(req, res, next) {
+export const processNewProjectForm = async (req, res, next) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -109,9 +109,9 @@ export async function processNewProjectForm(req, res, next) {
   } catch (error) {
     next(error);
   }
-}
+};
 
-export async function showEditProjectForm(req, res, next) {
+export const showEditProjectForm = async (req, res, next) => {
   try {
     const projectId = req.params.id;
     const project = await getProjectDetails(projectId);
@@ -133,9 +133,9 @@ export async function showEditProjectForm(req, res, next) {
   } catch (error) {
     next(error);
   }
-}
+};
 
-export async function processEditProjectForm(req, res, next) {
+export const processEditProjectForm = async (req, res, next) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -182,9 +182,9 @@ export async function processEditProjectForm(req, res, next) {
   } catch (error) {
     next(error);
   }
-}
+};
 
-export async function showUpdateProjectCategoriesForm(req, res, next) {
+export const showUpdateProjectCategoriesForm = async (req, res, next) => {
   try {
     const projectId = req.params.id;
 
@@ -215,13 +215,13 @@ export async function showUpdateProjectCategoriesForm(req, res, next) {
   } catch (error) {
     next(error);
   }
-}
+};
 
-export async function processUpdateProjectCategoriesForm(
+export const processUpdateProjectCategoriesForm = async (
   req,
   res,
   next
-) {
+) => {
   try {
     const projectId = req.params.id;
 
@@ -250,4 +250,4 @@ export async function processUpdateProjectCategoriesForm(
   } catch (error) {
     next(error);
   }
-}
+};

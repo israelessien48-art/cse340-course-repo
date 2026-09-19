@@ -8,7 +8,7 @@ import {
 
 import { validationResult } from "express-validator";
 
-export async function showCategoriesPage(req, res, next) {
+export const showCategoriesPage = async (req, res, next) => {
   try {
     const categories = await getAllCategories();
 
@@ -19,9 +19,9 @@ export async function showCategoriesPage(req, res, next) {
   } catch (error) {
     next(error);
   }
-}
+};
 
-export async function showCategoryDetailsPage(req, res, next) {
+export const showCategoryDetailsPage = async (req, res, next) => {
   try {
     const categoryId = req.params.id;
     const category = await getCategoryDetails(categoryId);
@@ -44,17 +44,17 @@ export async function showCategoryDetailsPage(req, res, next) {
   } catch (error) {
     next(error);
   }
-}
+};
 
-export function showNewCategoryForm(req, res) {
+export const showNewCategoryForm = (req, res) => {
   res.render("new-category", {
     title: "Add Category",
     errors: [],
     data: {}
   });
-}
+};
 
-export async function processNewCategoryForm(req, res, next) {
+export const processNewCategoryForm = async (req, res, next) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -76,9 +76,9 @@ export async function processNewCategoryForm(req, res, next) {
   } catch (error) {
     next(error);
   }
-}
+};
 
-export async function showEditCategoryForm(req, res, next) {
+export const showEditCategoryForm = async (req, res, next) => {
   try {
     const categoryId = req.params.id;
     const category = await getCategoryDetails(categoryId);
@@ -97,9 +97,9 @@ export async function showEditCategoryForm(req, res, next) {
   } catch (error) {
     next(error);
   }
-}
+};
 
-export async function processEditCategoryForm(req, res, next) {
+export const processEditCategoryForm = async (req, res, next) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -125,4 +125,4 @@ export async function processEditCategoryForm(req, res, next) {
   } catch (error) {
     next(error);
   }
-}
+};

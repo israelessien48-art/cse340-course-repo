@@ -1,6 +1,6 @@
 import db from "./db.js";
 
-export async function getAllOrganizations() {
+export const getAllOrganizations = async () => {
   const { rows } = await db.query(`
     SELECT
       organization_id,
@@ -13,9 +13,9 @@ export async function getAllOrganizations() {
   `);
 
   return rows;
-}
+};
 
-export async function getOrganizationDetails(id) {
+export const getOrganizationDetails = async (id) => {
   const organizationQuery = `
     SELECT
       organization_id,
@@ -51,14 +51,14 @@ export async function getOrganizationDetails(id) {
     ...organizationResult.rows[0],
     projects: projectsResult.rows
   };
-}
+};
 
-export async function createOrganization(
+export const createOrganization = async (
   name,
   description,
   contact_email,
   logo_filename
-) {
+) => {
   const result = await db.query(
     `
       INSERT INTO organization
@@ -71,15 +71,15 @@ export async function createOrganization(
   );
 
   return result.rows[0];
-}
+};
 
-export async function updateOrganization(
+export const updateOrganization = async (
   organization_id,
   name,
   description,
   contact_email,
   logo_filename
-) {
+) => {
   const result = await db.query(
     `
       UPDATE organization
@@ -105,4 +105,4 @@ export async function updateOrganization(
   }
 
   return result.rows[0];
-}
+};

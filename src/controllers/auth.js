@@ -5,15 +5,15 @@ import {
   createUser
 } from "../models/users.js";
 
-export function showRegisterForm(req, res) {
+export const showRegisterForm = (req, res) => {
   res.render("register", {
     title: "Register",
     errors: [],
     data: {}
   });
-}
+};
 
-export async function processRegister(req, res) {
+export const processRegister = async (req, res) => {
   const { name, email, password } = req.body;
 
   try {
@@ -45,17 +45,17 @@ export async function processRegister(req, res) {
       data: { name, email }
     });
   }
-}
+};
 
-export function showLoginForm(req, res) {
+export const showLoginForm = (req, res) => {
   res.render("login", {
     title: "Login",
     errors: [],
     data: {}
   });
-}
+};
 
-export async function processLogin(req, res) {
+export const processLogin = async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -93,7 +93,7 @@ export async function processLogin(req, res) {
 
     req.flash("notice", "You are now logged in.");
 
-    return res.redirect("/");
+    return res.redirect("/dashboard");
   } catch (error) {
     console.error("Login error:", error);
 
@@ -105,9 +105,9 @@ export async function processLogin(req, res) {
       data: { email }
     });
   }
-}
+};
 
-export function processLogout(req, res) {
+export const processLogout = (req, res) => {
   req.session.destroy((error) => {
     if (error) {
       console.error("Logout error:", error);
@@ -116,4 +116,4 @@ export function processLogout(req, res) {
 
     res.redirect("/");
   });
-}
+};

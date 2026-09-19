@@ -1,6 +1,6 @@
 import { getAllUsers } from "../models/users.js";
 
-export async function showUsersPage(req, res) {
+export const showUsersPage = async (req, res) => {
   try {
     const users = await getAllUsers();
 
@@ -14,4 +14,4 @@ export async function showUsersPage(req, res) {
       title: "Server Error"
     });
   }
-}
+};

@@ -7,7 +7,7 @@ import {
 
 import { validationResult } from "express-validator";
 
-export async function showOrganizationsPage(req, res, next) {
+export const showOrganizationsPage = async (req, res, next) => {
   try {
     const organizations = await getAllOrganizations();
 
@@ -18,9 +18,9 @@ export async function showOrganizationsPage(req, res, next) {
   } catch (error) {
     next(error);
   }
-}
+};
 
-export async function showOrganizationDetailsPage(req, res, next) {
+export const showOrganizationDetailsPage = async (req, res, next) => {
   try {
     const organizationId = req.params.id;
     const organization = await getOrganizationDetails(organizationId);
@@ -38,17 +38,17 @@ export async function showOrganizationDetailsPage(req, res, next) {
   } catch (error) {
     next(error);
   }
-}
+};
 
-export function showNewOrganizationForm(req, res) {
+export const showNewOrganizationForm = (req, res) => {
   res.render("new-organization", {
     title: "Add Organization",
     errors: [],
     data: {}
   });
-}
+};
 
-export async function processNewOrganizationForm(req, res, next) {
+export const processNewOrganizationForm = async (req, res, next) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -79,9 +79,9 @@ export async function processNewOrganizationForm(req, res, next) {
   } catch (error) {
     next(error);
   }
-}
+};
 
-export async function showEditOrganizationForm(req, res, next) {
+export const showEditOrganizationForm = async (req, res, next) => {
   try {
     const organizationId = req.params.id;
     const organization = await getOrganizationDetails(organizationId);
@@ -100,9 +100,9 @@ export async function showEditOrganizationForm(req, res, next) {
   } catch (error) {
     next(error);
   }
-}
+};
 
-export async function processEditOrganizationForm(req, res, next) {
+export const processEditOrganizationForm = async (req, res, next) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -139,4 +139,4 @@ export async function processEditOrganizationForm(req, res, next) {
   } catch (error) {
     next(error);
   }
-}
+};
