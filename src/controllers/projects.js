@@ -9,6 +9,12 @@ import {
 
 import { getAllOrganizations } from "../models/organizations.js";
 
+import {
+  addVolunteer,
+  removeVolunteer,
+  isUserVolunteer
+} from "../models/volunteers.js";
+
 import { validationResult } from "express-validator";
 
 const NUMBER_OF_UPCOMING_PROJECTS = 5;
@@ -41,13 +47,75 @@ export const showProjectDetailsPage = async (req, res, next) => {
 
     const categories = await getCategoriesByProjectId(projectId);
 
+    let isVolunteer = false;
+
+    if (req.session.user) {
+      isVolunteer = await isUserVolunteer(
+        req.session.user.user_id,
+        projectId
+      );
+    }
+
     res.render("project", {
       title: project.title,
       project: {
         ...project,
         categories
-      }
+      },
+      isVolunteer
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const processAddVolunteer = async (req, res, next) => {
+  try {
+    const projectId = req.params.id;
+    const userId = req.session.user.user_id;
+
+    const project = await getProjectDetails(projectId);
+
+    if (!project) {
+      const err = new Error("Project not found");
+      err.status = 404;
+      return next(err);
+    }
+
+    await addVolunteer(userId, projectId);
+
+    req.flash(
+      "success",
+      `You are now volunteering for ${project.title}.`
+    );
+
+    res.redirect(`/project/${projectId}`);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const processRemoveVolunteer = async (req, res, next) => {
+  try {
+    const projectId = req.params.id;
+    const userId = req.session.user.user_id;
+
+    const project = await getProjectDetails(projectId);
+
+    if (!project) {
+      const err = new Error("Project not found");
+      err.status = 404;
+      return next(err);
+    }
+
+    await removeVolunteer(userId, projectId);
+
+    req.flash(
+      "success",
+      `You are no longer volunteering for ${project.title}.`
+    );
+
+    res.redirect(`/project/${projectId}`);
   } catch (error) {
     next(error);
   }

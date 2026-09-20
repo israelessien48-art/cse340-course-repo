@@ -19,7 +19,9 @@ import {
   showEditProjectForm,
   processEditProjectForm,
   showUpdateProjectCategoriesForm,
-  processUpdateProjectCategoriesForm
+  processUpdateProjectCategoriesForm,
+  processAddVolunteer,
+  processRemoveVolunteer
 } from "./controllers/projects.js";
 
 import {
@@ -99,6 +101,18 @@ router.post(
 
 router.get("/projects", showProjectsPage);
 router.get("/project/:id", showProjectDetailsPage);
+
+router.get(
+  "/project/:id/volunteer",
+  requireLogin,
+  processAddVolunteer
+);
+
+router.get(
+  "/project/:id/unvolunteer",
+  requireLogin,
+  processRemoveVolunteer
+);
 
 router.get(
   "/new-project",

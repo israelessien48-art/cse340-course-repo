@@ -22,6 +22,26 @@
     </a>
   </p>
 
+  <% if (user) { %>
+    <h2>Volunteer</h2>
+
+    <% if (isVolunteer) { %>
+      <p>You are volunteering for this project.</p>
+
+      <p>
+        <a href="/project/<%= project.project_id %>/unvolunteer">
+          Remove Volunteer
+        </a>
+      </p>
+    <% } else { %>
+      <p>
+        <a href="/project/<%= project.project_id %>/volunteer">
+          Volunteer for this Project
+        </a>
+      </p>
+    <% } %>
+  <% } %>
+
   <% if (user && user.role_id === 2) { %>
     <p>
       <a href="/edit-project/<%= project.project_id %>">
